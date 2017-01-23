@@ -27,6 +27,21 @@ class BinarySearchTree
     end
   end
 
+  def self.insert!(node, value)
+    if node
+      if value > node.value
+        node.right = BinarySearchTree.insert!(node.right, value)
+        node.right.parent = node
+      else
+        node.left = BinarySearchTree.insert!(node.left, value)
+        node.left.parent = node
+      end
+      return node
+    else
+      return BSTNode.new(value)
+    end
+  end
+
   def find(value)
     self.class.find!(@root, value)
   end
@@ -59,20 +74,9 @@ class BinarySearchTree
     self.class.delete!(@root, value)
   end
 
-  def self.insert!(node, value)
-    if node
-      if value > node.value
-        node.right = BinarySearchTree.insert!(node.right, value)
-        node.right.parent = node
-      else
-        node.left = BinarySearchTree.insert!(node.left, value)
-        node.left.parent = node
-      end
-      return node
-    else
-      return BSTNode.new(value)
-    end
-  end
+
+
+
 
   # DFS
   def self.find!(node, value)
