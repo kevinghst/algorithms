@@ -66,22 +66,5 @@ def validateBST(root)
   return true
 end
 
-seven = BTnode.new(7)
-three = BTnode.new(3)
-two = BTnode.new(2)
-nine = BTnode.new(9)
-eight = BTnode.new(8)
-ten = BTnode.new(10)
-one = BTnode.new(1)
-
-seven.left = three
-seven.right = nine
-
-three.left = two
-
-nine.left = eight
-nine.right = ten
-
-three.right = one
-
-p validateBST(seven)
+# Design an algorithm and write code to find the first common ancestor of two nodes in a
+# binary tree. Avoid storing additional noes in a data structure.

@@ -74,7 +74,25 @@ class BinarySearchTree
     self.class.delete!(@root, value)
   end
 
-
+  def next_node(node, level, value)
+    if level == 0
+      if node.right != nil
+        return node.right.value
+      else
+        next_node(node, 1, value)
+      end
+    else
+      if node == @root
+        return nil
+      else
+        if node.parent.value >= value
+          return node.parent.value
+        else
+          next_node(node.parent, 1, value)
+        end
+      end
+    end
+  end
 
 
 
@@ -180,23 +198,24 @@ class BinarySearchTree
   end
 end
 
-# BFS
-# def self.find!(node, value)
-#   queue = [node]
-#   until queue.empty?
-#     el = queue.shift
-#     return el if el.value == value
-#     if el.left
-#       queue.push(el.left)
-#     end
-#     if el.right
-#       queue.push(el.right)
-#     end
-#   end
-# end
+
 
 tree = BinarySearchTree.new
-p tree.root
+tree.insert(5)
+tree.insert(3)
+tree.insert(10)
 tree.insert(1)
+tree.insert(4)
+tree.insert(0)
 tree.insert(2)
-p tree.root
+tree.insert(4)
+tree.insert(8)
+tree.insert(15)
+tree.insert(7)
+tree.insert(9)
+tree.insert(14)
+tree.insert(16)
+
+node = tree.find(2)
+
+p tree.next_node(node, 0, node.value)
