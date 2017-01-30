@@ -1,4 +1,3 @@
-require 'byebug'
 
 class Link
   attr_accessor :key, :val, :next, :prev

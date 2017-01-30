@@ -1,4 +1,4 @@
-require 'byebug'
+require "byebug"
 
 class BSTNode
   attr_accessor :left, :right, :value, :parent
@@ -94,7 +94,38 @@ class BinarySearchTree
     end
   end
 
+  def pathsSum(node, array, target)
+    sum = 0
+    if node == nil
+      return 0
+    else
 
+
+      i = 0
+      while i < array.length
+        array[i] = array[i] + node.value
+        if array[i] == target
+          sum = sum + 1
+        end
+        i = i+1
+      end
+
+      sum = sum + 1 if node.value == target
+      array.push(node.value)
+
+
+      sum = sum + pathsSum(node.left, array, target) + pathsSum(node.right, array, target)
+    end
+
+    var = array.pop
+    i = 0
+    while i < array.length
+      array[i] = array[i] - var
+      i = i+1
+    end
+
+    return sum
+  end
 
   # DFS
   def self.find!(node, value)
@@ -199,23 +230,15 @@ class BinarySearchTree
 end
 
 
-
+#
 tree = BinarySearchTree.new
-tree.insert(5)
-tree.insert(3)
+tree.insert(20)
 tree.insert(10)
-tree.insert(1)
-tree.insert(4)
-tree.insert(0)
-tree.insert(2)
-tree.insert(4)
-tree.insert(8)
+tree.insert(25)
+tree.insert(5)
 tree.insert(15)
-tree.insert(7)
-tree.insert(9)
-tree.insert(14)
-tree.insert(16)
+tree.insert(22)
+tree.insert(50)
 
-node = tree.find(2)
 
-p tree.next_node(node, 0, node.value)
+p tree.pathsSum(tree.root, [], 45)

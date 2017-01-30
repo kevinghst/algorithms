@@ -1,6 +1,6 @@
 require_relative "bst.rb"
-require "byebug"
 require_relative "p04_linked_list.rb"
+require "byebug"
 
 # Given a sorted (increasing order) array with unique integer elements, write an
 # algorithm to create a binary search tree with minimal height.
@@ -61,4 +61,75 @@ def listDepth(tree)
     j = j + 1
   end
   return lists
+end
+
+
+# T1 and T2 are two very large binary trees, with T1 much bigger than T2. Create an
+# algorithm to determine if T2 is a subtree of T1.
+
+def check_subtree(sub_root, small_root)
+  if sub_root.value != small_root.value
+    raise "does not match"
+  elsif sub_root == nil && small_root == nil
+    return nil
+  else
+    if sub_root.left != nil
+      left_value = check_subtree(sub_root.left, small_root.left)
+    end
+    if sub_root.right != nil
+      right_value = check_subtree(sub_root.right, small_root.right)
+    end
+  end
+end
+
+def subtree(big, small)
+  smallQueue = [small.root]
+  i = 0
+  until i == smallQueue.length
+    if smallQueue[i].left != nil
+      smallQueue.push(smallQueue[i].left)
+    end
+    if smallQueue[i].right != nil
+      smallQueue.push(smallQueue[i].right)
+    end
+    i = i+1
+  end
+
+  smallDepth = small.height
+  bigDepth = big.height
+
+  level = 0
+  x = 0
+  y = 1
+
+  bigQueue = [big.root]
+  i = 0
+  until level > (bigDepth - smallDepth)
+    if x == 0
+      x = y
+      y = 0
+      level += 1
+    end
+    x = x - 1
+    if bigQueue[i].left != nil
+      bigQueue.push(bigQueue[i].left)
+      y += 1
+    end
+    if bigQueue[i].right != nil
+      bigQueue.push(bigQueue[i].right)
+      y += 1
+    end
+    i = i+1
+  end
+  i = 0
+  while i < bigQueue.length
+    begin
+      if check_subtree(bigQueue[i], small.root) == nil
+        return true
+      end
+    rescue
+      i = i + 1
+    end
+  end
+  return false
 end

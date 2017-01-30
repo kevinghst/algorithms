@@ -65,6 +65,3 @@ def validateBST(root)
   end
   return true
 end
-
-# Design an algorithm and write code to find the first common ancestor of two nodes in a
-# binary tree. Avoid storing additional noes in a data structure.
