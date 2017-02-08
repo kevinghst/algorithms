@@ -175,13 +175,13 @@ def permutationNR(string, hash)
       dup = string.dup
       char = dup.slice!(i)
       values = []
-	
+
       if hash[dup] == nil
         values = permutationNR(dup, hash)
 	hash[dup] = values.dup
         values.map! {|substr| char + substr}
-      else 
-	 puts dup 
+      else
+	 puts dup
 	end
 
       final = final + values
@@ -196,26 +196,26 @@ end
 def parens(num)
 	if num == 1
 		return ["()"]
-	else 
+	else
 		final = []
 		prev = parens(num-1)
 		prev.each do |child|
 			first = "(" + child + ")"
 			final.push(first)
-			
+
 			second_one = "()" + child
 			second_two = child + "()"
-			
-			if second_one == second_two 
+
+			if second_one == second_two
 				final.push(second_one)
-			else 
+			else
 				final.push(second_one)
 				final.push(second_two)
-			end 
-		end 
+			end
+		end
 		return final
 	end
-	
+
 end
 
 def parensO(string, left, right)
@@ -227,32 +227,32 @@ def parensO(string, left, right)
 	if left_first == 0
 		right.times do |i|
 			new_left += ")"
-		end 
+		end
 		final.push(new_left)
 	else
 		left_values = parensO(new_left, left_first, right)
 	end
-	
+
 	final += left_values
-	
+
 	right_second = right - 1
-	if right_second >= left 
+	if right_second >= left
 		new_right = string + ")"
-		
+
 		right_values = parensO(new_right, left, right_second)
-		
+
 		final += right_values
-	end 
-	
+	end
+
 	return final
 end
 
 def paintFill(grid, coord, direct, orig, final)
 	x = coord[0]
 	y = coord[1]
-	if grid[x][y] != orig 
-		return nil 
-	else 
+	if grid[x][y] != orig
+		return nil
+	else
 		if direct == nil
 			grid[x][y] = final
 			paintFill(grid, [x+1, y], "U", orig, final)
@@ -281,23 +281,56 @@ def paintFill(grid, coord, direct, orig, final)
 			paintFill(grid, [x, y-1], "L", orig, final)
 		end
 	end
-end 
+end
 
 
-def coins(array, n)
-	
-	array.each do |coin|
-		remainder = n - coin
-		if remainder == 0
-			return 1 
-		else 
-			
-		
-		
-	end
-	
-	
-end 
+def coinsQuick(array, n, hash)
+  if n == 0
+    return 1
+  elsif n < 0
+    return 0
+  else
+    final = 0
+
+    array.each do |coin|
+      poss = 0
+      subarr = array.select{|x| x <= coin}
+      subarr_dup = subarr.dup
+      subarr_dup.push(n-coin)
+      if hash[subarr_dup]
+        poss = hash[subarr_dup]
+      else
+        poss = coinsQuick(subarr, n - coin, hash)
+        hash[subarr_dup] = poss
+      end
+
+      final += poss
+    end
+    return final
+  end
+end
+
+def coinsSlow(array, n)
+  if n == 0
+    return 1
+  elsif n < 0
+    return 0
+  else
+    final = 0
+
+    array.each do |coin|
+      poss = 0
+      subarr = array.select{|x| x <= coin}
+
+      poss = coinsSlow(subarr, n - coin)
 
 
-p coins([25, 10, 5, 1], n)
+      final += poss
+    end
+    return final
+  end
+
+end
+
+
+p coinsQuick([25, 10, 5, 1], 1000, {})
