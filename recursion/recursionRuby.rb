@@ -151,9 +151,38 @@ def permutation(string, hash)
         values.map! {|substr| char + substr}
       else
         values = permutation(dup, hash)
+	hash[dup] = values.dup
         values.map! {|substr| char + substr}
-        hash[string] = values
       end
+
+      final = final + values
+
+      i+=1
+    end
+    return final.uniq
+  end
+end
+
+
+def permutationNR(string, hash)
+  if string.length == 1
+    return [string]
+  else
+    final = []
+
+    i = 0
+    while i < string.length
+      dup = string.dup
+      char = dup.slice!(i)
+      values = []
+	
+      if hash[dup] == nil
+        values = permutationNR(dup, hash)
+	hash[dup] = values.dup
+        values.map! {|substr| char + substr}
+      else 
+	 puts dup 
+	end
 
       final = final + values
 
@@ -163,5 +192,112 @@ def permutation(string, hash)
   end
 end
 
-p brutePermutation("abcdefghijz")
-# p permutation("abcdefghijz", {})
+
+def parens(num)
+	if num == 1
+		return ["()"]
+	else 
+		final = []
+		prev = parens(num-1)
+		prev.each do |child|
+			first = "(" + child + ")"
+			final.push(first)
+			
+			second_one = "()" + child
+			second_two = child + "()"
+			
+			if second_one == second_two 
+				final.push(second_one)
+			else 
+				final.push(second_one)
+				final.push(second_two)
+			end 
+		end 
+		return final
+	end
+	
+end
+
+def parensO(string, left, right)
+	final = []
+	left_values = []
+	right_values = []
+	left_first = left - 1
+	new_left = string + "("
+	if left_first == 0
+		right.times do |i|
+			new_left += ")"
+		end 
+		final.push(new_left)
+	else
+		left_values = parensO(new_left, left_first, right)
+	end
+	
+	final += left_values
+	
+	right_second = right - 1
+	if right_second >= left 
+		new_right = string + ")"
+		
+		right_values = parensO(new_right, left, right_second)
+		
+		final += right_values
+	end 
+	
+	return final
+end
+
+def paintFill(grid, coord, direct, orig, final)
+	x = coord[0]
+	y = coord[1]
+	if grid[x][y] != orig 
+		return nil 
+	else 
+		if direct == nil
+			grid[x][y] = final
+			paintFill(grid, [x+1, y], "U", orig, final)
+			paintFill(grid, [x-1, y], "D", orig, final)
+			paintFill(grid, [x, y+1], "R", orig, final)
+			paintFill(grid, [x, y-1], "L", orig, final)
+		elsif direct == "U"
+			grid[x][y] = final
+			paintFill(grid, [x+1, y], "U", orig, final)
+			paintFill(grid, [x, y+1], "R", orig, final)
+			paintFill(grid, [x, y-1], "L", orig, final)
+		elsif direct == "D"
+			grid[x][y] = final
+			paintFill(grid, [x-1, y], "D", orig, final)
+			paintFill(grid, [x, y+1], "R", orig, final)
+			paintFill(grid, [x, y-1], "L", orig, final)
+		elsif direct == "R"
+			grid[x][y] = final
+			paintFill(grid, [x-1, y], "D", orig, final)
+			paintFill(grid, [x+1, y], "U", orig, final)
+			paintFill(grid, [x, y+1], "R", orig, final)
+		elsif direct == "L"
+			grid[x][y] = final
+			paintFill(grid, [x-1, y], "D", orig, final)
+			paintFill(grid, [x+1, y], "U", orig, final)
+			paintFill(grid, [x, y-1], "L", orig, final)
+		end
+	end
+end 
+
+
+def coins(array, n)
+	
+	array.each do |coin|
+		remainder = n - coin
+		if remainder == 0
+			return 1 
+		else 
+			
+		
+		
+	end
+	
+	
+end 
+
+
+p coins([25, 10, 5, 1], n)
