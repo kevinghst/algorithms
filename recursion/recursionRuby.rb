@@ -333,4 +333,118 @@ def coinsSlow(array, n)
 end
 
 
-p coinsQuick([25, 10, 5, 1], 1000, {})
+
+def eightQueens(grid, number)
+	if number == 8
+		return [grid]
+	else 
+		final = []
+		count = 0
+		grid[number].each_with_index do |spot, index|
+			if spot == nil 
+				count += 1
+				
+				
+				dup = deepDup(grid)
+				
+				
+				i = 0
+				while i < 8
+					dup[number][i] = false
+					dup[i][index] = false
+				i+=1
+				end
+			
+				diaganolize(dup, number, index)
+				
+				dup[number][index] = "blah"
+				
+				children = eightQueens(dup, number+1)
+				
+				unless children == nil
+					final = final + children
+				end
+			end
+		end
+		
+		if count == 0
+			return nil 
+		end 
+		
+		return final
+	end
+	
+end
+
+def diaganolize(grid, row, col)
+	x = row - 1
+	y = col + 1
+	until x < 0 || y > 7
+		grid[x][y] = false
+		x-=1
+		y+=1
+	end 
+	
+	x = row + 1
+	y = col + 1
+	until x > 7 || y>7
+		grid[x][y] = false
+		x+=1
+		y+=1
+	end
+	
+	x = row-1
+	y = col-1
+	until x<0 || y<0
+		grid[x][y] = false
+		x-=1
+		y-=1
+	end
+	
+	x=row+1
+	y=col-1
+	until x>7 || y<0
+		grid[x][y] = false
+		x+=1
+		y-=1
+	end
+	return grid
+end
+
+
+def deepDup(grid)
+	new = []
+	grid.each do |row|
+		new.push(row.dup)
+	end 
+	return new
+end
+
+array = [
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil],
+	[nil, nil, nil, nil, nil, nil, nil, nil]
+]
+
+
+p eightQueens(array, 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
