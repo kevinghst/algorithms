@@ -420,31 +420,91 @@ def deepDup(grid)
 	return new
 end
 
-array = [
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil],
-	[nil, nil, nil, nil, nil, nil, nil, nil]
-]
 
 
-p eightQueens(array, 0)
+def stackBoxes(combined, leftover)
+	if leftover.length == 0
+		sum = 0
+		combined.each do |box|
+			sum += box[0].to_i
+		end
+		return sum
+	else
+		if combined.length == 0
+			combined.push(leftover.pop)
+			p combined
+			p leftover
+			return stackBoxes(combined, leftover)
+		else 
+			array = []
+			item = leftover.pop
+			combined.each_with_index do |box, idx|
+				if box[0].to_i > item[0].to_i && box[1].to_i > item[1].to_i && box[2].to_i > item[2].to_i
+					combined.unshift(item)
+					break
+				elsif box[0].to_i < item[0].to_i && box[1].to_i < item[1].to_i && box[2].to_i < item[2].to_i
+					if idx == combined.length - 1
+						combined.push(item)
+						break
+					end
+				else
+					array.push(idx)
+				end
+			end 
+			
+			if array.length > 0
+				new = combined.dup
+				new.slice!(array.first..array.last)
+				new.insert(array.first, item)
+				original_height = stackBoxes(combined, leftover.dup)
+				new_height = stackBoxes(new, leftover.dup)
+				if original_height > new_height
+					return original_height
+				else
+					return new_height
+				end
+			else
+				return stackBoxes(combined, leftover)
+			end
+		end
+	end
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
+def boolEval(string, val)
+	if string.length == 3
+		condition = 0
+		if string[1] == "^"
+			condition = 1 if string[0].to_i ^ string[1].to_i == val
+		elsif string[1] == "|"
+			condition = 1 if string[0].to_i | string[1].to_i == val
+		elsif string[2] == "&"
+			condition = 1 if string[0].to_i & string[1].to_i == val
+		end
+		return condition
+	else
+		total = 0
+		value
+		if string[1] == "^"
+			value = string[0].to_i ^ string[1].to_i
+		elsif string[1] == "|"
+			value = string[0].to_i | string[1].to_i
+		elsif string[2] == "&"
+			value = string[0].to_i & string[1].to_i 
+		end
+		
+		
+		first = boolEval(value.to_s + string[3..string.length-1])
+		
+		secondpart = boolEval(string[2..string.length-1])
+		
+		second = boolEval(string[0..1] + secondpart)
+		
+		
+		
+	end
+	
+	
+	
+end
 
 
