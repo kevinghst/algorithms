@@ -472,39 +472,31 @@ end
 
 def boolEval(string, val)
 	if string.length == 3
-		condition = 0
-		if string[1] == "^"
-			condition = 1 if string[0].to_i ^ string[1].to_i == val
-		elsif string[1] == "|"
-			condition = 1 if string[0].to_i | string[1].to_i == val
-		elsif string[2] == "&"
-			condition = 1 if string[0].to_i & string[1].to_i == val
+		if (string[0].to_i.public_send string[1], string[2].to_i) == val
+			return 1
+		else
+			return 0
 		end
-		return condition
 	else
 		total = 0
-		value
-		if string[1] == "^"
-			value = string[0].to_i ^ string[1].to_i
-		elsif string[1] == "|"
-			value = string[0].to_i | string[1].to_i
-		elsif string[2] == "&"
-			value = string[0].to_i & string[1].to_i 
+				
+		first_two = string[0].to_i.public_send string[1], string[2].to_i
+		first_part = boolEval(first_two.to_s + string[3..string.length-1], val)
+		
+		total = total + first_part + 1
+		
+		if (string[0].to_i.public_send string[1], 1) == val && (string[0].to_i.public_send string[1], 0) == val
+			total = total + boolEval(string[2..string.length-1], 1) + boolEval(string[2..string.length-1], 0)
+		elsif (string[0].to_i.public_send string[1], 1) == val 
+			total = total + boolEval(string[2..string.length-1], 1)
+		elsif (string[0].to_i.public_send string[1], 0) == val
+			total = total + boolEval(string[2..string.length-1], 0)
 		end
 		
 		
-		first = boolEval(value.to_s + string[3..string.length-1])
-		
-		secondpart = boolEval(string[2..string.length-1])
-		
-		second = boolEval(string[0..1] + secondpart)
-		
-		
-		
+		return total
 	end
-	
-	
-	
 end
 
 
+p boolEval("0&0&0&1^1|0", 1)
