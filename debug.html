@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My First Web Page</h1>
+
+<script>
+
+function SparseSearch(string, array){
+  if (array.length < 1) {
+    return null;
+  } else {
+    let mid = Math.floor(array.length / 2);
+    if (array[mid] === string) {
+      return mid;
+    } else {
+      if (array[mid] === "") {
+        let left_pos = mid-1;
+        let right_pos = mid+1;
+        let new_mid = null;
+        while (left_pos >= 0 || right_pos < array.length) {
+          if (array[right_pos] !== "") {
+            if (array[right_pos] === string) { return right_pos; } else {
+              new_mid = right_pos;
+              break;
+            }
+          }
+
+          if (array[left_pos] !== "") {
+            if (array[left_pos] === string) { return left_pos; } else {
+              new_mid = left_pos;
+              break;
+            }
+          }
+          left_pos += 1;
+          right_pos += 1;
+        }
+        if (new_mid) {
+          mid = new_mid;
+        } else {
+          return null;
+        }
+      }
+
+    let left = array.slice(0, mid);
+    let right = array.slice(mid+1, array.length);
+
+    if (array[mid] > string){
+      let left_answer = SparseSearch(string, left);
+      if(left_answer === null) {
+        return null;
+      } else {
+        return left_answer;
+      }
+    } else {
+      let right_answer = SparseSearch(string, right);
+      if(right_answer === null) {
+        return null;
+      } else {
+        return 1 + left.length + right_answer;
+      }
+    }
+    }
+  }
+}
+
+let array = ["at", "", "", "", "ball", "", "", "car", "", "", "dad", "", ""];
+
+console.log(SparseSearch("ball", array));
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
