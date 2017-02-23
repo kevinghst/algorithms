@@ -20,6 +20,34 @@ function wordFrequencies(array, word, hash) {
   }
 }
 
-let array = ["bear", "ate", "the", "child", "bear", "damn", "the"];
 
-console.log(wordFrequencies(array, "bear", null));
+function intersection(lineOne, lineTwo) {
+  let lineOneYFirst = lineOne[0][1];
+  let lineOneYSecond = lineOne[1][1];
+  let lineTwoYFirst = lineTwo[0][1];
+  let lineTwoYSecond = lineTwo[1][1];
+
+  let lineOneXFirst = lineOne[0][0];
+  let lineOneXSecond = lineOne[1][0];
+  let lineTwoXFirst = lineTwo[0][0];
+  let lineTwoXSecond = lineTwo[1][0];
+
+  if (lineOneYFirst > lineTwoYFirst && lineOneYFirst > lineTwoYSecond && lineOneYSecond > lineTwoYFirst && lineOneYSecond > lineTwoYSecond){
+    return false;
+  }
+
+  if (lineOneYFirst < lineTwoYFirst && lineOneYFirst < lineTwoYSecond && lineOneYSecond < lineTwoYFirst && lineOneYSecond < lineTwoYSecond){
+    return false;
+  }
+
+  if (lineOneXFirst > lineTwoXFirst && lineOneXFirst > lineTwoXSecond && lineOneXSecond > lineTwoXFirst && lineOneXSecond > lineTwoXSecond){
+    return false;
+  }
+
+  if (lineOneXFirst < lineTwoXFirst && lineOneXFirst < lineTwoXSecond && lineOneXSecond < lineTwoXFirst && lineOneXSecond < lineTwoXSecond){
+    return false;
+  }
+  return true;
+}
+
+console.log(intersection([[1,4],[9,9]], [[2,9],[10,4]]));
