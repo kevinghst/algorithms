@@ -6,20 +6,75 @@
 
 <script>
 
-function NumberSwapper(a, b) {
+function intersection(first, second) {
   debugger
-  a = a + b;
-  b = a - b;
-  a = a - b;
+  if(first[0][0] > second[0][0] && first[0][0] > second[1][0] && first[1][0] > second[0][0] && first[1][0] > second[1][0]){
+    return false;
+  }
+  if(first[0][0] < second[0][0] && first[0][0] < second[1][0] && first[1][0] < second[0][0] && first[1][0] < second[1][0]){
+    return false;
+  }
+
+  let firstSmallerX;
+  let firstBiggerX;
+  let secondSmallerX;
+  let secondBiggerX;
+
+  let firstSmallerY;
+  let firstBiggerY;
+  let secondSmallerY;
+  let secondBiggerY;
+
+  if(first[0][0] > first[1][0]){
+    firstSmallerX = first[1][0];
+    firstBiggerX = first[0][0];
+    firstSmallerY = first[1][1];
+    firstBiggerY = first[0][1];
+  } else {
+    firstBiggerX = first[1][0];
+    firstSmallerX = first[0][0];
+    firstBiggerY = first[1][1];
+    firstSmallerY = first[0][1];
+  }
+
+  if(second[0][0] > second[1][0]){
+    secondSmallerX = second[1][0];
+    secondBiggerX = second[0][0];
+    secondSmallerY = second[1][1];
+    secondBiggerY = second[0][1];
+  } else {
+    secondBiggerX = second[1][0];
+    secondSmallerX = second[0][0];
+    secondBiggerY = second[1][1];
+    secondSmallerY = second[0][1];
+  }
+
+  let slopeSecond = (second[1][1] - second[0][1])/(second[1][0] - second[0][0]);
+  let slopeFirst = (first[1][1] - first[0][1])/(first[1][0] - first[0][0]);
+
+
+  if (firstSmallerX > secondSmallerX) {
+    secondSmallerY = slopeSecond * (firstSmallerX - secondSmallerX) + secondSmallerY;
+  } else {
+    firstSmallerY = slopeFirst * (secondSmallerX - firstSmallerX) + firstSmallerY;
+  }
+
+  if (firstBiggerX > secondBiggerX) {
+    firstBiggerY = slopeFirst * (secondBiggerX - firstSmallerX) + firstSmallerY;
+  } else {
+    secondBiggerY = slopeSecond * (firstBiggerX - secondSmallerX) + secondSmallerY;
+  }
+
+  if (firstBiggerY > secondBiggerY && firstSmallerY > secondSmallerY){
+    return false;
+  } else if (firstBiggerY < secondBiggerY && firstSmallerY < secondSmallerY){
+    return false;
+  } else {
+    return true;
+  }
 }
 
-
-var a = 95;
-var b = 5;
-
-NumberSwapper(a, b);
-
-console.log(a);
+console.log(intersection([[1,4],[9,9]], [[2,9],[10,4]]));
 
 </script>
 
