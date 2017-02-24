@@ -22,7 +22,6 @@ function wordFrequencies(array, word, hash) {
 
 
 function intersection(first, second) {
-  debugger
   if(first[0][0] > second[0][0] && first[0][0] > second[1][0] && first[1][0] > second[0][0] && first[1][0] > second[1][0]){
     return false;
   }
@@ -129,6 +128,50 @@ function getFives(i){
 
 
 function smallestDiff(one, two){
+  one.sort(function(a,b) { return  a-b; });
+  two.sort(function(a,b) { return  a-b; });
+  if(one[0] > two[two.length-1]){
+    return (one[0] - two[two.length-1]);
+  }
+  if (two[0] > one[one.length-1]){
+    return (two[0] - one[one.length-1]);
+  }
+
+  let biggerArr;
+  let smallerArr;
+
+  if(one[0] > two[0]){
+    biggerArr = one;
+    smallerArr = two;
+  } else {
+    biggerArr = two;
+    smallerArr = one;
+  }
+
+  let minimum = biggerArr[0] - smallerArr[0];
+  let smallerMore = 0;
+  let biggerCurrent = 0;
+
+  while(biggerArr[biggerCurrent] <= smallerArr[smallerArr.length-1]){
+    while(smallerArr[smallerMore] < biggerArr[biggerCurrent]){
+      smallerMore += 1;
+    }
+
+    let local_minimum;
+    let diffOne = Math.abs(smallerArr[smallerMore] - biggerArr[biggerCurrent]);
+    let diffTwo = Math.abs(smallerArr[smallerMore-1] - biggerArr[biggerCurrent]);
+
+    if (diffOne > diffTwo){
+      local_minimum = diffTwo;
+    } else {
+      local_minimum = diffOne;
+    }
+
+    if (minimum > local_minimum) { minimum = local_minimum; }
+    biggerCurrent += 1;
+  }
+
+  return minimum;
 
 }
 
