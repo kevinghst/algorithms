@@ -175,6 +175,165 @@ function smallestDiff(one, two){
 
 }
 
-let one = [1,3,15,11,2];
-let two = [23,127,235,19,8];
-console.log(smallestDiff(one,two));
+function englishInt(num){
+
+  if(num === 0) { return "zero"; }
+
+  let string = num.toString();
+
+  let output = "";
+  let shift = 0;
+
+  let i = string.length - 1;
+  while(i>=0){
+    let frag;
+    if(i-1 < 0){
+      frag = "00" + string[i];
+    } else if (i-2 < 0){
+      frag = "0" + string.substring(i-1, i+1);
+    } else {
+      frag = string.substring(i-2, i+1);
+    }
+    output = threeDigit(frag, shift) + " " + output;
+    i = i-3;
+    shift += 1;
+  }
+  return output.trim();
+}
+
+function threeDigit(string, shift){
+  let shiftHash = { 0: "", 1:"thousand", 2: "million", 3: "billion" };
+  let teens = {"10": "ten", "11": "eleven", "12": "twelve", "13": "thirteen", "14": "fourteen", "15": "fifteen", "16": "sixteen", "17": "seventeen", "18": "eighteen", "19": "nineteen" };
+  let tens = {"9": "ninety", "8": "eighty", "7": "seventy", "6": "sixty", "5": "fifty", "4": "forty", "3": "thirty", "2": "twenty", "1": "ten"};
+  let ones = {"1": "one", "2": "two", "3": "three", "4": "four", "5": "five", "6": "six", "7": "seven", "8": "eight", "9": "nine"};
+
+  if (string === "000") {
+    return "";
+  } else {
+
+
+    let output = "";
+    if(string[0] !== "0"){
+      output = ones[string[0]] + " hundred";
+    }
+
+    if(string[1] !== "0"){
+      if(string[2] === "0"){
+        output = output + " " + tens[string[1]];
+        return (output + " " + shiftHash[shift]).trim();
+      } else {
+        if(string[1] === "1"){
+          output = output + " " + teens[string.substring(1,3)];
+          return (output + " " + shiftHash[shift]).trim();
+        } else {
+          output = output + " " + tens[string[1]] + " " + ones[string[2]];
+          return (output + " " + shiftHash[shift]).trim();
+        }
+      }
+    }
+
+    if(string[2] !== "0"){
+      output = output + " " + ones[string[2]];
+    }
+
+    let final_output = output + " " + shiftHash[shift];
+
+    return final_output.trim();
+
+  }
+
+}
+
+function multiply(one, two){
+  let smaller;
+  let larger;
+
+  if (one > two) {
+    larger = one;
+    smaller = two;
+  } else {
+    smaller = one;
+    larger = two;
+  }
+
+  product = larger;
+  for(i=0; i<smaller-1; i++){
+    product += larger;
+  }
+  return product;
+}
+
+function substract(one, two){
+    let final = 0;
+    let smaller;
+    let larger;
+
+    if (one > two) {
+      larger = one;
+      smaller = two;
+    } else {
+      smaller = one;
+      larger = two;
+    }
+
+    let i = smaller;
+    while (smaller < larger){
+      smaller += 1;
+      final += 1;
+    }
+
+    if (one > two){
+      return final;
+    } else {
+      return "-" + final.toString();
+    }
+}
+
+function divide(one, two){
+
+  if (two > one){
+    return 0;
+  }
+
+  if (two === one){
+    return 1;
+  }
+
+  let final = 0;
+  let twoMod = two;
+  let hash = { two: 1, 0: 0 };
+  let hash_keys = [two, 0];
+  let fin = final;
+
+  while(twoMod < one){
+
+    if(final === 0){ final = 1; fin = 1; }
+    debugger
+    if(twoMod+two <= one){
+      twoMod = twoMod + two;
+      final = final + fin;
+      hash_keys.unshift(twoMod);
+      hash[twoMod] = final;
+      fin = final;
+      two = twoMod;
+    } else {
+      for(let i=0; i<hash_keys.length; i++){
+        if(twoMod + hash_keys[i] <= one){
+          if (hash_keys[i] === 0) {
+            return final;
+          } else {
+            two = hash_keys[i];
+            fin = hash[hash_keys[i]];
+            continue;
+          }
+        }
+      }
+    }
+
+
+
+  }
+  return final;
+}
+
+console.log(divide(37, 3));
