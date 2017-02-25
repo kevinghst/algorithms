@@ -264,6 +264,10 @@ function multiply(one, two){
 }
 
 function substract(one, two){
+    if(one === two){
+      return 0;
+    }
+
     let final = 0;
     let smaller;
     let larger;
@@ -276,21 +280,47 @@ function substract(one, two){
       larger = two;
     }
 
-    let i = smaller;
+    let increment = 1;
+    let steps = 0;
+    let array = [];
+    let stopped = false;
+
     while (smaller < larger){
-      smaller += 1;
-      final += 1;
+      if(smaller + increment <= larger){
+        if (smaller + increment === larger){
+          if (one > two){
+            return steps + increment;
+          } else {
+            return "-" + (steps + increment).toString();
+          }
+          return steps + increment;
+        } else {
+          smaller = smaller + increment;
+          steps = steps + increment;
+          if(stopped === false){
+            array.unshift(increment);
+            increment = increment + increment;
+          }
+        }
+      } else {
+        stopped = true;
+        for(let i =0; i<array.length; i++){
+          if(array[i] + smaller <= larger){
+            increment = array[i];
+          }
+        }
+      }
     }
 
+
     if (one > two){
-      return final;
+      return smaller;
     } else {
-      return "-" + final.toString();
+      return "-" + smaller.toString();
     }
 }
 
 function divide(one, two){
-
   if (two > one){
     return 0;
   }
@@ -301,14 +331,14 @@ function divide(one, two){
 
   let final = 0;
   let twoMod = two;
-  let hash = { two: 1, 0: 0 };
+  let hash = { 0: 0 };
+  hash[two] = 1;
   let hash_keys = [two, 0];
   let fin = final;
 
   while(twoMod < one){
 
     if(final === 0){ final = 1; fin = 1; }
-    debugger
     if(twoMod+two <= one){
       twoMod = twoMod + two;
       final = final + fin;
@@ -324,16 +354,11 @@ function divide(one, two){
           } else {
             two = hash_keys[i];
             fin = hash[hash_keys[i]];
-            continue;
+            break;
           }
         }
       }
     }
-
-
-
   }
   return final;
 }
-
-console.log(divide(37, 3));

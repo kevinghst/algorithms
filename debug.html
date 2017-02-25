@@ -6,58 +6,64 @@
 
 <script>
 
-function smallestDiff(one, two){
-  one.sort(function(a,b) { return  a-b });
-  two.sort(function(a,b) { return  a-b });
-  if(one[0] > two[two.length-1]){
-    return (one[0] - two[two.length-1]);
-  }
-  if (two[0] > one[one.length-1]){
-    return (two[0] - one[one.length-1]);
-  }
-
-  let biggerArr;
-  let smallerArr;
-
-  if(one[0] > two[0]){
-    biggerArr = one;
-    smallerArr = two;
-  } else {
-    biggerArr = two;
-    smallerArr = one;
-  }
-
-  let minimum = biggerArr[0] - smallerArr[0];
-  let smallerMore = 0;
-  let biggerCurrent = 0;
-
-  while(biggerArr[biggerCurrent] <= smallerArr[smallerArr.length-1]){
-    while(smallerArr[smallerMore] < biggerArr[biggerCurrent]){
-      smallerMore += 1;
+function substract(one, two){
+    if(one === two){
+      return 0;
     }
 
-    let local_minimum;
-    let diffOne = Math.abs(smallerArr[smallerMore] - biggerArr[biggerCurrent]);
-    let diffTwo = Math.abs(smallerArr[smallerMore-1] - biggerArr[biggerCurrent]);
+    let final = 0;
+    let smaller;
+    let larger;
 
-    if (diffOne > diffTwo){
-      local_minimum = diffTwo;
+    if (one > two) {
+      larger = one;
+      smaller = two;
     } else {
-      local_minimum = diffOne;
+      smaller = one;
+      larger = two;
     }
 
-    if (minimum > local_minimum) { minimum = local_minimum; }
-    biggerCurrent += 1;
-  }
+    let increment = 1;
+    let steps = 0;
+    let array = [];
+    let stopped = false;
 
-  return minimum;
+    while (smaller < larger){
+      if(smaller + increment <= larger){
+        if (smaller + increment === larger){
+          if (one > two){
+            return steps + increment;
+          } else {
+            return "-" + (steps + increment).toString();
+          }
+          return steps + increment;
+        } else {
+          smaller = smaller + increment;
+          steps = steps + increment;
+          if(stopped === false){
+            array.unshift(increment);
+            increment = increment + increment;
+          }
+        }
+      } else {
+        stopped = true;
+        for(let i =0; i<array.length; i++){
+          if(array[i] + smaller <= larger){
+            increment = array[i];
+          }
+        }
+      }
+    }
 
+
+    if (one > two){
+      return smaller;
+    } else {
+      return "-" + smaller.toString();
+    }
 }
 
-let one = [1,3,15,11,2];
-let two = [23,127,235,19,8];
-console.log(smallestDiff(one,two));
-
+console.log(substract(12, 2));
 </script>
 
 </body>
