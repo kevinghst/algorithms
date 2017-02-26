@@ -6,64 +6,30 @@
 
 <script>
 
-function substract(one, two){
-    if(one === two){
-      return 0;
-    }
-
-    let final = 0;
-    let smaller;
-    let larger;
-
-    if (one > two) {
-      larger = one;
-      smaller = two;
-    } else {
-      smaller = one;
-      larger = two;
-    }
-
-    let increment = 1;
-    let steps = 0;
-    let array = [];
-    let stopped = false;
-
-    while (smaller < larger){
-      if(smaller + increment <= larger){
-        if (smaller + increment === larger){
-          if (one > two){
-            return steps + increment;
-          } else {
-            return "-" + (steps + increment).toString();
-          }
-          return steps + increment;
-        } else {
-          smaller = smaller + increment;
-          steps = steps + increment;
-          if(stopped === false){
-            array.unshift(increment);
-            increment = increment + increment;
-          }
-        }
+function divingBoard(n){
+  if (n===1) {
+    let hash = {};
+    hash[1] = true;
+    hash[2] = false;
+    return hash;
+  } else {
+    let result = {};
+    let prev = divingBoard(n-1);
+    let prev_keys = Object.keys(prev);
+    prev_keys.forEach(function(key) {
+      let keyInt = parseInt(key);
+      if (prev[key] === true){
+        result[keyInt+1] = true;
+        result[keyInt+2] = false;
       } else {
-        stopped = true;
-        for(let i =0; i<array.length; i++){
-          if(array[i] + smaller <= larger){
-            increment = array[i];
-          }
-        }
+        result[keyInt+2] = false;
       }
-    }
-
-
-    if (one > two){
-      return smaller;
-    } else {
-      return "-" + smaller.toString();
-    }
+    });
+    return result;
+  }
 }
 
-console.log(substract(12, 2));
+console.log(divingBoard(8));
 </script>
 
 </body>

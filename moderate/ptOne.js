@@ -362,3 +362,61 @@ function divide(one, two){
   }
   return final;
 }
+
+
+function livingPeople(people){
+
+
+}
+
+
+let people = {
+  "a": {
+    "birth": 6,
+    "death": 8
+  },
+
+  "b": {
+    "birth": 3,
+    "death" : 6
+  },
+
+  "c": {
+    "birth": 4,
+    "death" : 7
+  },
+
+  "d": {
+    "birth": 1,
+    "death" : 6
+  },
+
+  "e": {
+    "birth": 4,
+    "death" : 8
+  },
+
+};
+
+
+function divingBoard(n){
+  if (n===1) {
+    let hash = {};
+    hash[1] = true;
+    hash[2] = false;
+    return hash;
+  } else {
+    let result = {};
+    let prev = divingBoard(n-1);
+    let prev_keys = Object.keys(prev);
+    prev_keys.forEach(function(key) {
+      if (prev[key] === true){
+        result[key+1] = true;
+        result[key+2] = false;
+      } else {
+        result[key+2] = false;
+      }
+    });
+    return Object.keys(result);
+  }
+}
