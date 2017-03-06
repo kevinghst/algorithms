@@ -5,33 +5,54 @@
 <h1>My First Web Page</h1>
 
 <script>
-
-function contigSeqIter(array){
-  let maxSum = array[0];
-  let sum = 0;
-
-  for(i=0; i<array.length; i++){
-    if(array[i] > maxSum){
-      maxSum = array[i];
+function radixSort(array){
+  let hash = {"0":[], "1":[], "2":[], "3":[], "4":[], "5":[], "6":[], "7":[], "8":[], "9":[]};
+  let biggest = 0;
+  for(let i=0; i<array.length; i++){
+    array[i] = array[i].toString();
+    if(biggest < array[i].length){
+      biggest = array[i].length;
     }
-    debugger
-    if(sum + array[i] > 0){
-      sum += array[i];
-      if(sum > maxSum){
-        maxSum = sum;
-      }
-    } else {
-      sum = 0;
-    }
-
   }
-  return maxSum;
+
+  for(let j=0; j<array.length; j++){
+    let diff = biggest - array[j].length;
+    for(let z=0; z<diff; z++){
+      array[j] = "0" + array[j];
+    }
+  }
+
+  for(let x=0; x<biggest; x++){
+    sort(array, x, biggest-1, hash);
+  }
+
 }
 
 
+function sort(array, time, length, hash){
+  array.forEach(function(x){
+    hash[x[length-time]].push(x);
+  });
 
-console.log(contigSeqIter([5,-9,6,-2,3]));
+  let count = 0;
+
+  for(i=0;i<=9;i++){
+    while(hash[i.toString().length > 0]){
+      array[count] = hash[i.toString()].shift();
+      count += 1;
+    }
+  }
+}
+
+
+let arr = [10,15,1,60,5,100,25,50];
+
+radixSort(arr);
+
+console.log(arr);
+
 </script>
 
 </body>
 </html>
+Try it Yourself »
